@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KHARKIV & CHUHUIV — ECO REVIVAL</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Bebas+Neue&family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #f0d080;
+    --gold-dark: #8a6f2e;
+    --black: #080808;
+    --dark: #0f0f0f;
+    --panel: #141414;
+    --white: #f0ebe0;
+    --silver: #a8a8a8;
+    --green: #1e5c1e;
+    --green2: #2d7a2d;
+    --green3: #4aaa4a;
+    --red: #6b0000;
+    --blue: #1a3a5c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #050505;
+    display: flex;
+    justify-content: center;
+    padding: 30px 10px;
+    font-family: 'Bebas Neue', sans-serif;
+  }
+
+  .poster {
+    width: 750px;
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 80px rgba(201,168,76,0.25), 0 0 200px rgba(201,168,76,0.08);
+  }
+
+  /* Texture overlays */
+  .tex-cross {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Crect x='27' y='0' width='6' height='60' fill='%23c9a84c'/%3E%3Crect x='0' y='27' width='60' height='6' fill='%23c9a84c'/%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+
+  .tex-diag {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(201,168,76,0.012) 3px, rgba(201,168,76,0.012) 6px);
+  }
+
+  /* =================== HEADER =================== */
+  .header {
+    position: relative; z-index: 10;
+    border-bottom: 1px solid var(--gold);
+    background: linear-gradient(180deg, rgba(201,168,76,0.1) 0%, transparent 100%);
+    padding: 16px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cross-group { display: flex; gap: 8px; align-items: center; }
+
+  .ch-x { width: 22px; height: 22px; position: relative; flex-shrink: 0; }
+  .ch-x::before, .ch-x::after { content: ''; position: absolute; background: var(--gold); border-radius: 1px; }
+  .ch-x::before { width: 6px; height: 22px; left: 50%; transform: translateX(-50%); top: 0; }
+  .ch-x::after  { width: 22px; height: 6px; top: 8px; left: 0; }
+  .ch-x.sm { width: 13px; height: 13px; }
+  .ch-x.sm::before { width: 4px; height: 13px; }
+  .ch-x.sm::after  { width: 13px; height: 4px; top: 5px; }
+
+  .header-brand {
+    font-family: 'UnifrakturMaguntia', serif;
+    font-size: 20px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(201,168,76,0.4);
+  }
+
+  /* =================== HERO TITLE =================== */
+  .hero {
+    position: relative; z-index: 10;
+    padding: 30px 40px 10px;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .ey-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); opacity: 0.5; }
+  .ey-line.r { background: linear-gradient(90deg, var(--gold), transparent); }
+  .ey-text { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 5px; color: var(--gold); opacity: 0.7; white-space: nowrap; }
+
+  .hero-title {
+    font-family: 'UnifrakturMaguntia', serif;
+    font-size: 74px;
+    line-height: 0.88;
+    color: var(--white);
+    text-shadow: 2px 2px 0 var(--gold-dark), 0 0 50px rgba(201,168,76,0.25);
+    letter-spacing: -1px;
+  }
+
+  .hero-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 10px;
+    color: var(--gold);
+    margin-top: 10px;
+    opacity: 0.8;
+  }
+
+  /* =================== LOCATION BADGES =================== */
+  .loc-badges {
+    position: relative; z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 18px 40px;
+  }
+
+  .badge {
+    flex: 1;
+    border: 1px solid var(--gold);
+    padding: 12px 20px;
+    text-align: center;
+    background: rgba(201,168,76,0.05);
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .badge::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(201,168,76,0.2);
+    pointer-events: none;
+  }
+
+  .badge-icon { font-size: 22px; margin-bottom: 4px; }
+  .badge-city { font-family: 'Cinzel', serif; font-size: 18px; color: var(--gold); letter-spacing: 4px; font-weight: 700; }
+  .badge-region { font-size: 9px; letter-spacing: 3px; color: var(--silver); opacity: 0.6; margin-top: 2px; }
+
+  /* =================== MAP ART =================== */
+  .map-section {
+    position: relative; z-index: 10;
+    margin: 0 40px;
+    border: 1px solid var(--gold);
+    overflow: hidden;
+    height: 260px;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .map-label {
+    position: absolute;
+    top: 10px; left: 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: var(--gold);
+    opacity: 0.5;
+    z-index: 5;
+  }
+
+  /* =================== DAMAGE STATS =================== */
+  .damage-header {
+    position: relative; z-index: 10;
+    margin: 28px 40px 0;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .sec-line { flex: 1; height: 1px; background: var(--gold); opacity: 0.3; }
+
+  .sec-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  .stats-grid {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 12px 40px 0;
+    border: 1px solid var(--gold);
+    background: var(--gold);
+    gap: 1px;
+  }
+
+  .stat {
+    background: var(--panel);
+    padding: 18px 10px;
+    text-align: center;
+    transition: background 0.25s;
+  }
+
+  .stat:hover { background: rgba(201,168,76,0.09); }
+
+  .stat-n {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 34px; line-height: 1;
+    color: var(--gold);
+    text-shadow: 0 0 15px rgba(201,168,76,0.4);
+  }
+
+  .stat-u { font-size: 13px; }
+
+  .stat-l {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: var(--silver);
+    margin-top: 5px;
+    line-height: 1.4;
+    opacity: 0.6;
+  }
+
+  /* =================== FACTS PANEL =================== */
+  .facts-title {
+    position: relative; z-index: 10;
+    margin: 26px 40px 0;
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .facts-grid {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    margin: 12px 40px 0;
+    background: var(--gold);
+    border: 1px solid var(--gold);
+  }
+
+  .fact-card {
+    background: var(--panel);
+    padding: 18px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    transition: background 0.25s;
+  }
+
+  .fact-card:hover { background: rgba(201,168,76,0.06); }
+
+  .fact-ico {
+    font-size: 24px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .fact-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 5px;
+    font-weight: 700;
+  }
+
+  .fact-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--silver);
+    line-height: 1.55;
+    opacity: 0.85;
+  }
+
+  .fact-body b {
+    color: var(--gold-light);
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  /* =================== RIVER SECTION =================== */
+  .river-section {
+    position: relative; z-index: 10;
+    margin: 24px 40px 0;
+    border: 1px solid var(--gold);
+    background: rgba(26,58,92,0.15);
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .river-top {
+    background: rgba(201,168,76,0.07);
+    border-bottom: 1px solid var(--gold);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .river-name {
+    font-family: 'UnifrakturMaguntia', serif;
+    font-size: 22px;
+    color: var(--gold);
+    text-shadow: 0 0 15px rgba(201,168,76,0.3);
+  }
+
+  .river-tag {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--silver);
+    opacity: 0.5;
+    margin-left: auto;
+  }
+
+  .river-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    background: var(--gold);
+  }
+
+  .river-col {
+    background: var(--panel);
+    padding: 16px 18px;
+    border-right: none;
+  }
+
+  .river-col-head {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .river-col-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12.5px;
+    color: var(--silver);
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+
+  .river-col-text b { color: var(--gold-light); font-style: italic; }
+
+  /* =================== TIMELINE =================== */
+  .timeline-section {
+    position: relative; z-index: 10;
+    margin: 24px 40px 0;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 30px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    opacity: 0.4;
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 14px;
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: -26px;
+    top: 4px;
+    width: 10px; height: 10px;
+    border: 1px solid var(--gold);
+    background: var(--panel);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .tl-date {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.8;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-top: 1px;
+    min-width: 80px;
+  }
+
+  .tl-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--silver);
+    line-height: 1.5;
+    opacity: 0.85;
+  }
+
+  .tl-text b { color: var(--gold-light); font-weight: 600; font-style: italic; }
+
+  /* =================== SOLUTIONS GRID =================== */
+  .sol-grid {
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: 24px 40px 0;
+    background: var(--gold);
+    border: 1px solid var(--gold);
+  }
+
+  .sol-card {
+    background: var(--panel);
+    padding: 16px 16px;
+    text-align: center;
+    transition: background 0.25s;
+  }
+
+  .sol-card:hover { background: rgba(201,168,76,0.08); }
+
+  .sol-num {
+    font-family: 'UnifrakturMaguntia', serif;
+    font-size: 36px;
+    color: rgba(201,168,76,0.2);
+    line-height: 1;
+  }
+
+  .sol-icon { font-size: 20px; margin: 2px 0; }
+
+  .sol-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin: 6px 0 5px;
+    font-weight: 700;
+  }
+
+  .sol-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11.5px;
+    color: var(--silver);
+    line-height: 1.5;
+    opacity: 0.75;
+  }
+
+  /* =================== QUOTE =================== */
+  .quote-block {
+    position: relative; z-index: 10;
+    margin: 24px 40px 0;
+    padding: 22px 36px;
+    border-left: 3px solid var(--gold);
+    border-right: 3px solid var(--gold);
+    background: rgba(201,168,76,0.04);
+    text-align: center;
+  }
+
+  .quote-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-style: italic;
+    color: var(--white);
+    line-height: 1.55;
+    letter-spacing: 0.3px;
+  }
+
+  .quote-uk {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    margin-top: 12px;
+    opacity: 0.6;
+  }
+
+  /* =================== BOTTOM EMBLEM =================== */
+  .emblem-row {
+    position: relative; z-index: 10;
+    margin: 26px 40px 0;
+    display: flex; align-items: center; gap: 16px;
+  }
+
+  .emb-line { flex: 1; height: 1px; background: var(--gold); opacity: 0.25; }
+
+  .emb-circle {
+    width: 76px; height: 76px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    background: rgba(201,168,76,0.04);
+  }
+
+  .emb-circle::after {
+    content: '';
+    position: absolute; inset: 5px;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 50%;
+  }
+
+  .emb-inner { text-align: center; z-index: 2; }
+  .emb-icon { font-size: 20px; display: block; }
+  .emb-word { font-family: 'UnifrakturMaguntia', serif; font-size: 12px; color: var(--gold); line-height: 1.1; }
+
+  /* =================== FOOTER =================== */
+  .footer {
+    position: relative; z-index: 10;
+    margin-top: 24px;
+    padding: 16px 40px;
+    border-top: 1px solid var(--gold);
+    background: linear-gradient(0deg, rgba(201,168,76,0.07) 0%, transparent 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .foot-tag { font-size: 9px; letter-spacing: 3px; color: var(--gold); opacity: 0.4; }
+  .foot-crosses { display: flex; gap: 10px; align-items: center; }
+
+  /* =================== ANIMATIONS =================== */
+  @keyframes pulse-border {
+    0%,100% { box-shadow: 0 0 80px rgba(201,168,76,0.25), 0 0 200px rgba(201,168,76,0.08); }
+    50%      { box-shadow: 0 0 120px rgba(201,168,76,0.4), 0 0 250px rgba(201,168,76,0.12); }
+  }
+
+  @keyframes title-glow {
+    0%,100% { text-shadow: 2px 2px 0 var(--gold-dark), 0 0 30px rgba(201,168,76,0.2); }
+    50%      { text-shadow: 2px 2px 0 var(--gold-dark), 0 0 70px rgba(201,168,76,0.45); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .poster { animation: pulse-border 5s ease-in-out infinite; }
+  .hero-title { animation: title-glow 4s ease-in-out infinite; }
+
+  .header      { animation: slideUp 0.6s ease 0.0s both; }
+  .hero        { animation: slideUp 0.6s ease 0.15s both; }
+  .loc-badges  { animation: slideUp 0.6s ease 0.25s both; }
+  .map-section { animation: slideUp 0.6s ease 0.3s both; }
+  .stats-grid  { animation: slideUp 0.6s ease 0.4s both; }
+  .facts-grid  { animation: slideUp 0.6s ease 0.5s both; }
+  .river-section { animation: slideUp 0.6s ease 0.55s both; }
+  .timeline-section { animation: slideUp 0.6s ease 0.6s both; }
+  .sol-grid    { animation: slideUp 0.6s ease 0.65s both; }
+  .quote-block { animation: slideUp 0.6s ease 0.7s both; }
+  .emblem-row  { animation: slideUp 0.6s ease 0.75s both; }
+  .footer      { animation: slideUp 0.6s ease 0.8s both; }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="tex-cross"></div>
+  <div class="tex-diag"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="cross-group">
+      <div class="ch-x sm"></div><div class="ch-x sm"></div><div class="ch-x"></div>
+    </div>
+    <span class="header-brand">Ecological Revival · Харківщина</span>
+    <div class="cross-group">
+      <div class="ch-x"></div><div class="ch-x sm"></div><div class="ch-x sm"></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <div class="ey-line"></div>
+      <span class="ey-text">✦ Харків · Чугуїв · Слобожанщина ✦</span>
+      <div class="ey-line r"></div>
+    </div>
+    <div class="hero-title">Відродження<br>Землі</div>
+    <div class="hero-sub">Екологічне Відновлення Харківщини</div>
+  </div>
+
+  <!-- LOCATION BADGES -->
+  <div class="loc-badges">
+    <div class="badge">
+      <div class="badge-icon">🏙️</div>
+      <div class="badge-city">Харків</div>
+      <div class="badge-region">1,4 МЛН МЕШКАНЦІВ · ДРУГЕ МІСТО УКРАЇНИ</div>
+    </div>
+    <div class="badge">
+      <div class="badge-icon">🌿</div>
+      <div class="badge-city">Чугуїв</div>
+      <div class="badge-region">ЧУГУЇВСЬКИЙ РАЙОН · ЛІСОСТЕП · СІВ. ДОНЕЦЬ</div>
+    </div>
+    <div class="badge">
+      <div class="badge-icon">🌊</div>
+      <div class="badge-city">Сів. Донець</div>
+      <div class="badge-region">375 КМ В МЕЖАХ ХАРКІВЩИНИ · ГОЛОВНА РІЧКА</div>
+    </div>
+  </div>
+
+  <!-- MAP ART (SVG) -->
+  <div class="map-section">
+    <div class="map-label">✦ КАРТА РЕГІОНУ · СХЕМАТИЧНА</div>
+    <svg width="100%" height="100%" viewBox="0 0 670 260" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="g1" cx="40%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#1e5c1e" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#080808" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+        <filter id="glow3">
+          <feGaussianBlur stdDeviation="4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <rect width="670" height="260" fill="#090909"/>
+      <rect width="670" height="260" fill="url(#g1)"/>
+
+      <!-- Grid lines -->
+      <g opacity="0.06" stroke="#c9a84c" stroke-width="0.5">
+        <line x1="0" y1="65" x2="670" y2="65"/>
+        <line x1="0" y1="130" x2="670" y2="130"/>
+        <line x1="0" y1="195" x2="670" y2="195"/>
+        <line x1="167" y1="0" x2="167" y2="260"/>
+        <line x1="334" y1="0" x2="334" y2="260"/>
+        <line x1="501" y1="0" x2="501" y2="260"/>
+      </g>
+
+      <!-- Oblast border (schematic) -->
+      <path d="M120 30 L220 20 L380 25 L520 30 L600 60 L630 110 L620 180 L570 230 L460 245 L340 248 L220 240 L130 220 L80 170 L75 110 Z"
+            fill="rgba(45,122,45,0.06)" stroke="#c9a84c" stroke-width="1.2" opacity="0.35" stroke-dasharray="8,4"/>
+
+      <!-- Siverskyi Donets river (winding through) -->
+      <path d="M80 195 Q150 185 200 190 Q260 198 310 180 Q360 160 410 168 Q460 178 510 160 Q560 145 610 148"
+            fill="none" stroke="#4a8abf" stroke-width="3" opacity="0.7" filter="url(#glow3)"/>
+      <path d="M80 195 Q150 185 200 190 Q260 198 310 180 Q360 160 410 168 Q460 178 510 160 Q560 145 610 148"
+            fill="none" stroke="#6aabdf" stroke-width="1" opacity="0.4"/>
+
+      <!-- Tributaries -->
+      <path d="M200 80 Q210 120 200 190" fill="none" stroke="#4a8abf" stroke-width="1.5" opacity="0.4" stroke-dasharray="4,3"/>
+      <path d="M310 50 Q315 100 310 180" fill="none" stroke="#4a8abf" stroke-width="1.5" opacity="0.4" stroke-dasharray="4,3"/>
+      <path d="M410 70 Q415 120 410 168" fill="none" stroke="#4a8abf" stroke-width="1.5" opacity="0.4" stroke-dasharray="4,3"/>
+
+      <!-- Kharkiv city -->
+      <circle cx="235" cy="120" r="22" fill="rgba(201,168,76,0.1)" stroke="#c9a84c" stroke-width="1.5" filter="url(#glow3)"/>
+      <circle cx="235" cy="120" r="8" fill="#c9a84c" opacity="0.9"/>
+      <circle cx="235" cy="120" r="4" fill="#f0d080"/>
+      <!-- Kharkiv pulse -->
+      <circle cx="235" cy="120" r="22" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.3">
+        <animate attributeName="r" values="22;32;22" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <text x="245" y="108" font-family="'Cinzel', serif" font-size="11" fill="#c9a84c" font-weight="700" letter-spacing="1">Харків</text>
+      <text x="245" y="120" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#888" letter-spacing="2">1,4 МЛН</text>
+
+      <!-- Chuhuiv city -->
+      <circle cx="340" cy="178" r="14" fill="rgba(74,170,74,0.1)" stroke="#4aaa4a" stroke-width="1.2" filter="url(#glow3)"/>
+      <circle cx="340" cy="178" r="5" fill="#4aaa4a" opacity="0.9"/>
+      <circle cx="340" cy="178" r="2.5" fill="#80df80"/>
+      <text x="350" y="170" font-family="'Cinzel', serif" font-size="10" fill="#4aaa4a" font-weight="700" letter-spacing="1">Чугуїв</text>
+      <text x="350" y="181" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#888" letter-spacing="2">РАЙОН</text>
+
+      <!-- Other cities -->
+      <circle cx="165" cy="75" r="5" fill="#c9a84c" opacity="0.4"/>
+      <text x="173" y="79" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#888" letter-spacing="1" opacity="0.6">Вовчанськ</text>
+
+      <circle cx="420" cy="165" r="5" fill="#c9a84c" opacity="0.4"/>
+      <text x="428" y="162" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#888" letter-spacing="1" opacity="0.6">Балаклія</text>
+
+      <circle cx="500" cy="145" r="5" fill="#c9a84c" opacity="0.4"/>
+      <text x="508" y="142" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#888" letter-spacing="1" opacity="0.6">Ізюм</text>
+
+      <!-- Pecheniz reservoir -->
+      <ellipse cx="295" cy="155" rx="18" ry="8" fill="rgba(74,138,191,0.3)" stroke="#4a8abf" stroke-width="0.8" opacity="0.7"/>
+      <text x="278" y="143" font-family="'Bebas Neue', sans-serif" font-size="7" fill="#4a8abf" letter-spacing="1" opacity="0.7">Печенізьке</text>
+      <text x="278" y="152" font-family="'Bebas Neue', sans-serif" font-size="7" fill="#4a8abf" letter-spacing="1" opacity="0.5">вдсх</text>
+
+      <!-- Forests -->
+      <g opacity="0.5" filter="url(#blur2)">
+        <ellipse cx="160" cy="145" rx="35" ry="20" fill="#1e5c1e"/>
+        <ellipse cx="380" cy="110" rx="30" ry="15" fill="#1e5c1e"/>
+        <ellipse cx="480" cy="130" rx="25" ry="12" fill="#1e5c1e"/>
+        <ellipse cx="550" cy="170" rx="20" ry="10" fill="#1e5c1e"/>
+      </g>
+
+      <!-- Legend -->
+      <g transform="translate(14,18)">
+        <rect width="90" height="68" fill="rgba(10,10,10,0.8)" stroke="rgba(201,168,76,0.3)" stroke-width="0.5"/>
+        <circle cx="14" cy="14" r="5" fill="#c9a84c"/>
+        <text x="24" y="18" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#c9a84c" letter-spacing="1">Місто</text>
+        <line x1="8" y1="30" x2="22" y2="30" stroke="#4a8abf" stroke-width="2.5"/>
+        <text x="26" y="34" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#4a8abf" letter-spacing="1">Річка</text>
+        <ellipse cx="15" cy="47" rx="8" ry="5" fill="#1e5c1e" opacity="0.6"/>
+        <text x="26" y="51" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#4aaa4a" letter-spacing="1">Ліс</text>
+        <line x1="8" y1="60" x2="22" y2="60" stroke="#c9a84c" stroke-width="1" stroke-dasharray="4,2" opacity="0.4"/>
+        <text x="26" y="63" font-family="'Bebas Neue', sans-serif" font-size="8" fill="#888" letter-spacing="1">Кордон</text>
+      </g>
+
+      <!-- River label -->
+      <text x="155" y="206" font-family="'Cinzel', serif" font-size="9" fill="#4a8abf" letter-spacing="2" opacity="0.7">Сіверський Донець →</text>
+    </svg>
+  </div>
+
+  <!-- DAMAGE STATS -->
+  <div class="damage-header">
+    <div class="sec-line"></div>
+    <span class="sec-title">✦ Екологічні збитки від війни ✦</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-n">11,4<span class="stat-u">B$</span></div>
+      <div class="stat-l">Збитки природі<br>Харківської обл.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">200<span class="stat-u">млрд</span></div>
+      <div class="stat-l">Екологічні збитки<br>місту Харків (грн)</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">5500<span class="stat-u">+</span></div>
+      <div class="stat-l">Об'єктів<br>пошкоджено</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">4<span class="stat-u">річки</span></div>
+      <div class="stat-l">Забруднено<br>нафтопродуктами</div>
+    </div>
+  </div>
+
+  <!-- FACTS -->
+  <div class="facts-title">
+    <div class="sec-line"></div>
+    <span class="sec-title">✦ Ключові Проблеми ✦</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="facts-grid">
+    <div class="fact-card">
+      <div class="fact-ico">🏭</div>
+      <div>
+        <div class="fact-title">Харків · Промислове Забруднення</div>
+        <div class="fact-body">У місті <b>198 промислових підприємств</b> зі стаціонарними джерелами викидів. Тракторний завод, завод Малишева, коксовий завод — основні забруднювачі атмосфери. Обстріли спричинили <b>колосальне накопичення будівельного сміття</b>, пластику і скла.</div>
+      </div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-ico">💧</div>
+      <div>
+        <div class="fact-title">Річки Харкова · Нафтова Катастрофа</div>
+        <div class="fact-body">Удар по нафтобазі у лютому 2024 р. забруднив річку <b>Немишля нафтопродуктами</b>. Нафтова плівка поширилась на <b>Уди, Лопань і Харків</b> — усі чотири річки міста завдовжки <b>58 км</b> в межах міста.</div>
+      </div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-ico">🌲</div>
+      <div>
+        <div class="fact-title">Чугуївський Район · Ліси під Загрозою</div>
+        <div class="fact-body">Науковці ХНУ ім. Каразіна дослідили <b>критичну втрату лісового покриву</b> у Вовчанській ОТГ Чугуївського району. Лісові ділянки екологічної мережі масово деградують внаслідок <b>бойових дій і пожеж</b>.</div>
+      </div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-ico">🪖</div>
+      <div>
+        <div class="fact-title">Мінна Небезпека · Десятиліття Очищення</div>
+        <div class="fact-body">За оцінками науковців, <b>повне очищення лісів від вибухонебезпечних предметів</b> може зайняти від одного до кількох десятиліть після завершення бойових дій. Це блокує відновлення <b>рідкісних видів фауни</b> і заповідних зон Харківщини.</div>
+      </div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-ico">🌡️</div>
+      <div>
+        <div class="fact-title">Ґрунти · Хімічна Деградація</div>
+        <div class="fact-body">Бойові дії спричинили <b>механічне руйнування, хімічне забруднення і біологічну деградацію ґрунтів</b>. Харківські чорноземи — одні з найродючіших у світі — потребують негайної рекультивації та <b>детоксикації від важких металів</b>.</div>
+      </div>
+    </div>
+    <div class="fact-card">
+      <div class="fact-ico">🦅</div>
+      <div>
+        <div class="fact-title">Біорізноманіття · Зникаючі Види</div>
+        <div class="fact-body">У заповідних об'єктах Харківщини гніздяться <b>великі хижі птахи з Червоної книги України</b> — орел та інші рідкісні види, занесені до Червоного списку МСОП. Бойові дії безпосередньо загрожують цим <b>унікальним природним об'єктам</b>.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIVER SECTION -->
+  <div class="river-section">
+    <div class="river-top">
+      <div class="river-name">Сіверський Донець</div>
+      <div class="river-tag">ГОЛОВНА ВОДНА АРТЕРІЯ · 1053 КМ ЗАГАЛЬНА ДОВЖИНА</div>
+    </div>
+    <div class="river-body" style="gap:1px;">
+      <div class="river-col">
+        <div class="river-col-head">⚠ Стан Річки</div>
+        <div class="river-col-text">Річка забезпечує водою <b>94% населення Сходу України</b>. Після 2022 р. затоплена військова техніка, снаряди та міни спричинили масштабне хімічне забруднення. Витоки палива та важкі метали загрожують усій екосистемі.</div>
+      </div>
+      <div class="river-col">
+        <div class="river-col-head">🌊 Чугуїв на Донці</div>
+        <div class="river-col-text">Чугуїв розташований безпосередньо на <b>берегах Сіверського Дінця</b>. Місто і район залежать від річки для водозабезпечення. Бойові дії в районі пошкодили <b>Печенізьке та Оскільське водосховища</b>, що критично для водопостачання регіону.</div>
+      </div>
+      <div class="river-col">
+        <div class="river-col-head">🔄 Шляхи Відновлення</div>
+        <div class="river-col-text">Необхідні: <b>розмінування дна</b>, очищення води від нафтопродуктів і важких металів, відновлення очисних споруд, <b>берегоукріплення</b> та дозасадження прибережних лісосмуг. Міжнародна співпраця — ключовий чинник успіху.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="facts-title">
+    <div class="sec-line"></div>
+    <span class="sec-title">✦ Хронологія Екологічних Подій ✦</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="timeline-section">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">02.2022</div>
+        <div class="tl-text">Початок повномасштабного вторгнення. <b>Харківська область стала однією з найбільш постраждалих</b> — бойові дії охопили Чугуївський, Вовчанський, Ізюмський та інші райони.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">02.2024</div>
+        <div class="tl-text">Удар по нафтобазі в Немишлянському районі Харкова. <b>Нафтопродукти розтеклися в усі чотири річки міста</b> — Немишля, Уди, Лопань і Харків. Згоріли 15 будинків, жертви серед мирних жителів.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2023–24</div>
+        <div class="tl-text">Харківська міська рада оцінює екологічні збитки у <b>200 млрд грн</b>. Міністерство довкілля фіксує збитки природі Харківської області на рівні <b>11,4 млрд доларів</b>.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">2024–25</div>
+        <div class="tl-text">Науковці ХНУ ім. Каразіна проводять дослідження деградації лісів Чугуївського району. Розробляються <b>стратегії відновлення ґрунтів і лісового покриву</b> Харківщини в умовах воєнного стану.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">МАЙБУТНЄ</div>
+        <div class="tl-text"><b>Розмінування, рекультивація, відновлення водних систем</b> і повернення рідкісних видів — головні цілі повоєнного екологічного відродження Харкова, Чугуєва і всього регіону.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOLUTIONS -->
+  <div class="facts-title">
+    <div class="sec-line"></div>
+    <span class="sec-title">✦ 6 Кроків Відновлення ✦</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="sol-grid">
+    <div class="sol-card">
+      <div class="sol-num">I</div>
+      <div class="sol-icon">💣</div>
+      <div class="sol-title">Розмінування</div>
+      <div class="sol-text">Очищення лісів, полів і берегів річок від мін та вибухонебезпечних предметів — перший крок до відновлення</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-num">II</div>
+      <div class="sol-icon">🌊</div>
+      <div class="sol-title">Очищення Річок</div>
+      <div class="sol-text">Видалення нафтопродуктів, важких металів і затопленої техніки з Сіверського Дінця та приток</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-num">III</div>
+      <div class="sol-icon">🌱</div>
+      <div class="sol-title">Рекультивація</div>
+      <div class="sol-text">Відновлення харківських чорноземів, детоксикація ґрунтів, висадка захисних смуг</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-num">IV</div>
+      <div class="sol-icon">🌳</div>
+      <div class="sol-title">Ліси Чугуєва</div>
+      <div class="sol-text">Відновлення знищених лісових масивів Чугуївського та Вовчанського районів, захист екомережі</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-num">V</div>
+      <div class="sol-icon">🦁</div>
+      <div class="sol-title">Дика Природа</div>
+      <div class="sol-text">Захист заповідних зон, відновлення популяцій хижих птахів і рідкісних видів Червоної книги</div>
+    </div>
+    <div class="sol-card">
+      <div class="sol-num">VI</div>
+      <div class="sol-icon">🌍</div>
+      <div class="sol-title">Моніторинг</div>
+      <div class="sol-text">Систематичний екологічний моніторинг, міжнародна співпраця, наукові дослідження ХНУ Каразіна</div>
+    </div>
+  </div>
+
+  <!-- QUOTE -->
+  <div class="quote-block">
+    <div class="quote-main">"Після саперів мають заходити екологи.<br>Відновлення природи — це теж перемога."</div>
+    <div class="quote-uk">✦ Відродження Харківщини · Природа · Люди · Майбутнє ✦</div>
+  </div>
+
+  <!-- EMBLEM -->
+  <div class="emblem-row">
+    <div class="emb-line"></div>
+    <div class="emb-circle">
+      <div class="emb-inner">
+        <span class="emb-icon">🌿</span>
+        <span class="emb-word">Земля<br>Жива</span>
+      </div>
+    </div>
+    <div class="emb-line"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="foot-tag">ХАРКІВ · ЧУГУЇВ · СЛОБОЖАНЩИНА · ВІДРОДЖЕННЯ</div>
+    <div class="foot-crosses">
+      <div class="ch-x sm"></div><div class="ch-x sm"></div><div class="ch-x sm"></div>
+    </div>
+    <div class="foot-tag">ECO · REVIVAL · UKRAINE · MMXXV</div>
+  </div>
+</div>
+</body>
+</html>
